@@ -1,0 +1,22 @@
+package com.actividad.fp.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.actividad.fp.entities.Alumno;
+import com.actividad.fp.entities.Modulo;
+
+@Repository
+public interface ModuloRepository extends JpaRepository<Modulo, Integer>{
+	boolean existsByCodigo(String codigo);
+	List<Alumno> findByCodigo(String codigo);
+	void deleteByCodigo(String codigo);
+	int countByCodigo(String codigo);
+	
+	boolean existsByDiminutivo(String diminutivo);
+	List<Alumno> findByDiminutivo(String diminutivo);
+	void deleteByDiminutivo(String diminutivo);
+	int countByDiminutivo(String diminutivo);
+}
