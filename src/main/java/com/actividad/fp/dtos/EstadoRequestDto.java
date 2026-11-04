@@ -1,6 +1,6 @@
 package com.actividad.fp.dtos;
 
-public record EstadoResquestDto(
+public record EstadoRequestDto(
 	String nombre,
 	String descripcion
 ) {}
