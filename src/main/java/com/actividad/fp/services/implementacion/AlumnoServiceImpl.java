@@ -1,12 +1,21 @@
 package com.actividad.fp.services.implementacion;
 
 import java.util.List;
-
+import org.springframework.stereotype.Service;
 import com.actividad.fp.dtos.AlumnoRequestDto;
 import com.actividad.fp.dtos.AlumnoResponseDto;
+import com.actividad.fp.entities.Alumno;
+import com.actividad.fp.repository.AlumnoRepository;
 import com.actividad.fp.services.AlumnoService;
 
+@Service //Se pone para indicarle a Spring boot que es un componente de la capa servicio y que debe gestionarlo como un bean.	
 public class AlumnoServiceImpl implements AlumnoService {
+
+    private final AlumnoRepository alumnoRepository;
+    
+    public AlumnoServiceImpl(AlumnoRepository alumnoRepository) {
+        this.alumnoRepository = alumnoRepository;
+    }
 
 	@Override
 	public List<AlumnoResponseDto> listarTodosLosAlumnos() {
@@ -55,5 +64,21 @@ public class AlumnoServiceImpl implements AlumnoService {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	private AlumnoResponseDto convertirAlumnoCogido(Alumno alumnoCogido) {
+		return new AlumnoResponseDto(
+			alumnoCogido.getId_alumno(),
+			alumnoCogido.getNombre(),
+			alumnoCogido.getApellidos(),
+			alumnoCogido.getDni(),
+			alumnoCogido.getNumero_ss(),
+			alumnoCogido.getEmail_centro(),
+			alumnoCogido.getEmail_personal(),
+			alumnoCogido.getTlf_personal(),
+			alumnoCogido.getFecha_alta(),
+			alumnoCogido.getFecha_baja(),
+			alumnoCogido.getFamilia() == null ? null : alumnoCogido.getFamilia().getId_familia()
+		);
+	}
+	
 }
