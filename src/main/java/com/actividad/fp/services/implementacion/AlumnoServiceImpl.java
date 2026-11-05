@@ -1,6 +1,8 @@
 package com.actividad.fp.services.implementacion;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.actividad.fp.dtos.AlumnoRequestDto;
 import com.actividad.fp.dtos.AlumnoResponseDto;
 import com.actividad.fp.entities.Alumno;
@@ -18,20 +20,24 @@ public class AlumnoServiceImpl implements AlumnoService {
        this.familiaRepository = familiaRepository;
    }
 	@Override
+	@Transactional(readOnly = true)
 	public List<AlumnoResponseDto> listarTodosLosAlumnos() {
 		return alumnoRepository.findAll().stream().map(this::convertirAlumnoCogido).toList();
 	}
 	@Override
+	@Transactional(readOnly = true)
 	public AlumnoResponseDto buscarAlumnoPorId(Integer id_alumno) {
 		Alumno alumnoEncontrado = alumnoRepository.findById(id_alumno).orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
 			return convertirAlumnoCogido(alumnoEncontrado);
 	}
 	@Override
+	@Transactional(readOnly = true)
 	public AlumnoResponseDto buscarAlumnoPorDni(String dni) {
 		Alumno alumnoEncontrado = alumnoRepository.findByDni(dni).orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
 			return convertirAlumnoCogido(alumnoEncontrado);
 	}
 	@Override
+	@Transactional
 	public AlumnoResponseDto crearAlumno(AlumnoRequestDto creacion) {
 		Alumno nuevoAlumno = new Alumno();
 		 	//nuevoAlumno.setId_alunno(creacion.id_alumno()); Esto no se hace porque el id se debe crear automáticamente.
@@ -50,6 +56,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 						return convertirAlumnoCogido(nuevoAlumno);
 	}
 	@Override
+	@Transactional
 	public AlumnoResponseDto actualizarAlumnoPorId(Integer id_alumno, AlumnoRequestDto datos_actualizados) {
 		Alumno alumnoEncontrado = alumnoRepository.findById(id_alumno).orElseThrow(() -> new RuntimeException("Alumno no encontrado."));
 		//alumnoEncontrado.setId_alumno(datos_actualizados.id_alumno()); Esto no se hace ya que no se debe poder cambiar el identificador.
@@ -68,6 +75,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 					return convertirAlumnoCogido(alumnoEncontrado);
 	}
 	@Override
+	@Transactional
 	public AlumnoResponseDto actualizarAlumnoPorDni(String dni, AlumnoRequestDto datos_actualizados) {
 		Alumno alumnoEncontrado = alumnoRepository.findByDni(dni).orElseThrow(() -> new RuntimeException("Alumno no encontrado."));
 			//alumnoEncontrado.setId_alumno(datos_actualizados.id_alumno()); Esto no se hace ya que no se debe poder cambiar el identificador.
@@ -86,11 +94,13 @@ public class AlumnoServiceImpl implements AlumnoService {
 						return convertirAlumnoCogido(alumnoEncontrado);
 	}
 	@Override
+	@Transactional
 	public void eliminarAlumnoPorId(Integer id_alumno) {
 		Alumno alumnoEncontrado = alumnoRepository.findById(id_alumno).orElseThrow(() -> new RuntimeException("Alumno no encontrado."));
 			alumnoRepository.delete(alumnoEncontrado);
 	}
 	@Override
+	@Transactional
 	public void eliminarAlumnoPorDni(String dni) {
 		Alumno alumnoEncontrado = alumnoRepository.findByDni(dni).orElseThrow(() -> new RuntimeException("Alumno no encontrado."));
 			alumnoRepository.delete(alumnoEncontrado);

@@ -1,6 +1,8 @@
 package com.actividad.fp.services.implementacion;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.actividad.fp.dtos.Alumno_Modulo_EstadoRequestDto;
 import com.actividad.fp.dtos.Alumno_Modulo_EstadoResponseDto;
 import com.actividad.fp.entities.Alumno;
@@ -27,15 +29,18 @@ public class Alumno_Modulo_EstadoServiceImpl implements Alumno_Modulo_EstadoServ
    }
 	
 	@Override
+	@Transactional(readOnly = true)
 	public List<Alumno_Modulo_EstadoResponseDto> listarTodosLosAlumno_Modulo_Estados() {
 		return alumno_Modulo_EstadoRepository.findAll().stream().map(this::convertirAlumno_Modulo_EstadoCogido).toList();
 	}
 	@Override
+	@Transactional(readOnly = true)
 	public Alumno_Modulo_EstadoResponseDto buscarAlumno_Modulo_EstadoPorId(Integer id_alumno_modulo_estado) {
 		Alumno_Modulo_Estado alumno_Modulo_EstadoEncontrado = alumno_Modulo_EstadoRepository.findById(id_alumno_modulo_estado).orElseThrow(() -> new RuntimeException("Alumno_Modulo_Estado no encontrado."));
 			return convertirAlumno_Modulo_EstadoCogido(alumno_Modulo_EstadoEncontrado);
 	}
 	@Override
+	@Transactional
 	public Alumno_Modulo_EstadoResponseDto crearAlumno_Modulo_Estado(Alumno_Modulo_EstadoRequestDto creacion) {
 		Alumno_Modulo_Estado alumno_Modulo_EstadoCreado = new Alumno_Modulo_Estado();
 			//alumno_Modulo_EstadoCreado.setId_alumno_modulo_estado(creacion.id_alumno_Modulo_Estado()); Esto no se hace porque el id se debe crear automáticamente.
@@ -49,6 +54,7 @@ public class Alumno_Modulo_EstadoServiceImpl implements Alumno_Modulo_EstadoServ
 						return convertirAlumno_Modulo_EstadoCogido(alumno_Modulo_EstadoCreado);
 	}
 	@Override
+	@Transactional
 	public Alumno_Modulo_EstadoResponseDto editarAlumno_Modulo_EstadoPorId(Integer id_alumno_modulo_estado, Alumno_Modulo_EstadoRequestDto datosActualizados) {
 		Alumno_Modulo_Estado alumno_Modulo_EstadoEncontrado = alumno_Modulo_EstadoRepository.findById(id_alumno_modulo_estado).orElseThrow(() -> new RuntimeException("Alumno_Modulo_EstadoRepository no encontrado."));
 			//alumno_Modulo_EstadoEncontrado.setId_alumno_modulo_estado(id_alumno_modulo_estado.id_alumno_Modulo_Estado); Esto no se hace ya que no se debe poder cambiar el identificador.
@@ -62,6 +68,7 @@ public class Alumno_Modulo_EstadoServiceImpl implements Alumno_Modulo_EstadoServ
 						return convertirAlumno_Modulo_EstadoCogido(alumno_Modulo_EstadoEncontrado);
 	}
 	@Override
+	@Transactional
 	public void eliminarAlumno_Modulo_EstadoPorId(Integer id_alumno_modulo_estado) {
 		Alumno_Modulo_Estado alumno_Modulo_EstadoEncontrado = alumno_Modulo_EstadoRepository.findById(id_alumno_modulo_estado).orElseThrow(() -> new RuntimeException("Alumno_Modulo_EstadoRepository no encontrado."));
 			alumno_Modulo_EstadoRepository.delete(alumno_Modulo_EstadoEncontrado);

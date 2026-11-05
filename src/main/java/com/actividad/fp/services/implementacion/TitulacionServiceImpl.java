@@ -3,6 +3,7 @@ package com.actividad.fp.services.implementacion;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.actividad.fp.dtos.TitulacionRequestDto;
 import com.actividad.fp.dtos.TitulacionResponseDto;
@@ -23,29 +24,34 @@ public class TitulacionServiceImpl implements TitulacionService {
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public List<TitulacionResponseDto> listarTodasLasTitulaciones() {
 		return titulacionRepository.findAll().stream().map(this::convertirTitulacionCogida).toList();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public TitulacionResponseDto buscarTitulacionPorId(Integer id_titulacion) {
 		Titulacion titulacionEncontrada = titulacionRepository.findById(id_titulacion).orElseThrow(() -> new RuntimeException("Titulacion no encontrada."));
 			return convertirTitulacionCogida(titulacionEncontrada);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public TitulacionResponseDto buscarTitulacionPorCodigo(String codigo) {
 		Titulacion titulacionEncontrada = titulacionRepository.findByCodigo(codigo).stream().findFirst().orElseThrow(() -> new RuntimeException("Titulacion no encontrada."));
 			return convertirTitulacionCogida(titulacionEncontrada);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public TitulacionResponseDto buscarTitulacionPorDiminutivo(String diminutivo) {
 		Titulacion titulacionEncontrada = titulacionRepository.findByDiminutivo(diminutivo).stream().findFirst().orElseThrow(() -> new RuntimeException("Titulacion no encontrada."));
 			return convertirTitulacionCogida(titulacionEncontrada);
 	}
 
 	@Override
+	@Transactional
 	public TitulacionResponseDto crearTitulacion(TitulacionRequestDto creacion) {
 		Titulacion nuevaTitulacion = new Titulacion();
 			nuevaTitulacion.setCodigo(creacion.codigo());
@@ -58,6 +64,7 @@ public class TitulacionServiceImpl implements TitulacionService {
 	}
 
 	@Override
+	@Transactional
 	public TitulacionResponseDto editarTitulacionPorId(Integer id_titulacion, TitulacionRequestDto datosActualizados) {
 		Titulacion titulacionEncontrada = titulacionRepository.findById(id_titulacion).orElseThrow(() -> new RuntimeException("Titulacion no encontrada."));
 			titulacionEncontrada.setCodigo(datosActualizados.codigo());
@@ -70,6 +77,7 @@ public class TitulacionServiceImpl implements TitulacionService {
 	}
 
 	@Override
+	@Transactional
 	public TitulacionResponseDto editarTitulacionPorCodigo(String codigo, TitulacionRequestDto datosActualizados) {
 		Titulacion titulacionEncontrada = titulacionRepository.findByCodigo(codigo).stream().findFirst().orElseThrow(() -> new RuntimeException("Titulacion no encontrada."));
 			titulacionEncontrada.setCodigo(datosActualizados.codigo());
@@ -82,6 +90,7 @@ public class TitulacionServiceImpl implements TitulacionService {
 	}
 
 	@Override
+	@Transactional
 	public TitulacionResponseDto editarTitulacionPorDiminutivo(String diminutivo, TitulacionRequestDto datosActualizados) {
 		Titulacion titulacionEncontrada = titulacionRepository.findByDiminutivo(diminutivo).stream().findFirst().orElseThrow(() -> new RuntimeException("Titulacion no encontrada."));
 			titulacionEncontrada.setCodigo(datosActualizados.codigo());
@@ -94,18 +103,21 @@ public class TitulacionServiceImpl implements TitulacionService {
 	}
 
 	@Override
+	@Transactional
 	public void eliminarTitulacionPorId(Integer id_titulacion) {
 		Titulacion titulacionEncontrada = titulacionRepository.findById(id_titulacion).orElseThrow(() -> new RuntimeException("Titulacion no encontrada."));
 			titulacionRepository.delete(titulacionEncontrada);
 	}
 
 	@Override
+	@Transactional
 	public void eliminarTitulacionPorCodigo(String codigo) {
 		Titulacion titulacionEncontrada = titulacionRepository.findByCodigo(codigo).stream().findFirst().orElseThrow(() -> new RuntimeException("Titulacion no encontrada."));
 			titulacionRepository.delete(titulacionEncontrada);
 	}
 
 	@Override
+	@Transactional
 	public void eliminarTitulacionPorDiminutivo(String diminutivo) {
 		Titulacion titulacionEncontrada = titulacionRepository.findByDiminutivo(diminutivo).stream().findFirst().orElseThrow(() -> new RuntimeException("Titulacion no encontrada."));
 			titulacionRepository.delete(titulacionEncontrada);

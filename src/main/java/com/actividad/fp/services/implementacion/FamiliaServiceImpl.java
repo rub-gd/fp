@@ -3,6 +3,7 @@ package com.actividad.fp.services.implementacion;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.actividad.fp.dtos.FamiliaRequestDto;
 import com.actividad.fp.dtos.FamiliaResponseDto;
@@ -19,17 +20,20 @@ public class FamiliaServiceImpl implements FamiliaService {
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public List<FamiliaResponseDto> listarTodasLasFamilias() {
 		return familiaRepository.findAll().stream().map(this::convertirFamiliaCogida).toList();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public FamiliaResponseDto buscarFamiliaPorId(Integer id_familia) {
 		Familia familiaEncontrada = familiaRepository.findById(id_familia).orElseThrow(() -> new RuntimeException("Familia no encontrada."));
 			return convertirFamiliaCogida(familiaEncontrada);
 	}
 
 	@Override
+	@Transactional
 	public FamiliaResponseDto crearFamilia(FamiliaRequestDto creacion) {
 		Familia nuevaFamilia = new Familia();
 			nuevaFamilia.setNombre_padre(creacion.nombre_padre());
@@ -55,6 +59,7 @@ public class FamiliaServiceImpl implements FamiliaService {
 	}
 
 	@Override
+	@Transactional
 	public FamiliaResponseDto editarFamiliaPorId(Integer id_familia, FamiliaRequestDto datosActualizados) {
 		Familia familiaEncontrada = familiaRepository.findById(id_familia).orElseThrow(() -> new RuntimeException("Familia no encontrada."));
 			familiaEncontrada.setNombre_padre(datosActualizados.nombre_padre());
@@ -80,6 +85,7 @@ public class FamiliaServiceImpl implements FamiliaService {
 	}
 
 	@Override
+	@Transactional
 	public void eliminarFamiliaPorId(Integer id_familia) {
 		Familia familiaEncontrada = familiaRepository.findById(id_familia).orElseThrow(() -> new RuntimeException("Familia no encontrada."));
 			familiaRepository.delete(familiaEncontrada);

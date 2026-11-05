@@ -3,6 +3,7 @@ package com.actividad.fp.services.implementacion;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.actividad.fp.dtos.ProfesorRequestDto;
 import com.actividad.fp.dtos.ProfesorResponseDto;
@@ -23,23 +24,27 @@ public class ProfesorServiceImpl implements ProfesorService {
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public List<ProfesorResponseDto> listarTodosLosProfesores() {
 		return profesorRepository.findAll().stream().map(this::convertirProfesorCogido).toList();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ProfesorResponseDto buscarProfesorPorId(Integer id_profesor) {
 		Profesor profesorEncontrado = profesorRepository.findById(id_profesor).orElseThrow(() -> new RuntimeException("Profesor no encontrado."));
 			return convertirProfesorCogido(profesorEncontrado);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ProfesorResponseDto buscarProfesorPorDni(String dni) {
 		Profesor profesorEncontrado = profesorRepository.findByDni(dni).stream().findFirst().orElseThrow(() -> new RuntimeException("Profesor no encontrado."));
 			return convertirProfesorCogido(profesorEncontrado);
 	}
 
 	@Override
+	@Transactional
 	public ProfesorResponseDto crearProfesor(ProfesorRequestDto creacion) {
 		Profesor nuevoProfesor = new Profesor();
 			nuevoProfesor.setNombre(creacion.nombre());
@@ -55,6 +60,7 @@ public class ProfesorServiceImpl implements ProfesorService {
 	}
 
 	@Override
+	@Transactional
 	public ProfesorResponseDto editarProfesorPorId(Integer id_profesor, ProfesorRequestDto datosActualizados) {
 		Profesor profesorEncontrado = profesorRepository.findById(id_profesor).orElseThrow(() -> new RuntimeException("Profesor no encontrado."));
 			profesorEncontrado.setNombre(datosActualizados.nombre());
@@ -70,6 +76,7 @@ public class ProfesorServiceImpl implements ProfesorService {
 	}
 
 	@Override
+	@Transactional
 	public ProfesorResponseDto editarProfesorPorDni(String dni, ProfesorRequestDto datosActualizados) {
 		Profesor profesorEncontrado = profesorRepository.findByDni(dni).stream().findFirst().orElseThrow(() -> new RuntimeException("Profesor no encontrado."));
 			profesorEncontrado.setNombre(datosActualizados.nombre());
@@ -85,12 +92,14 @@ public class ProfesorServiceImpl implements ProfesorService {
 	}
 
 	@Override
+	@Transactional
 	public void eliminarProfesorPorId(Integer id_profesor) {
 		Profesor profesorEncontrado = profesorRepository.findById(id_profesor).orElseThrow(() -> new RuntimeException("Profesor no encontrado."));
 			profesorRepository.delete(profesorEncontrado);
 	}
 
 	@Override
+	@Transactional
 	public void eliminarProfesorPorDni(String dni) {
 		Profesor profesorEncontrado = profesorRepository.findByDni(dni).stream().findFirst().orElseThrow(() -> new RuntimeException("Profesor no encontrado."));
 			profesorRepository.delete(profesorEncontrado);

@@ -3,6 +3,7 @@ package com.actividad.fp.services.implementacion;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.actividad.fp.dtos.Profesor_ModuloRequestDto;
 import com.actividad.fp.dtos.Profesor_ModuloResponseDto;
@@ -27,17 +28,20 @@ public class Profesor_ModuloServiceImpl implements Profesor_ModuloService {
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public List<Profesor_ModuloResponseDto> listarTodosLosProfesor_Modulos() {
 		return profesor_ModuloRepository.findAll().stream().map(this::convertirProfesor_ModuloCogido).toList();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Profesor_ModuloResponseDto buscarProfesor_ModuloPorId(Integer id_profesor_modulo) {
 		Profesor_Modulo profesor_ModuloEncontrado = profesor_ModuloRepository.findById(id_profesor_modulo).orElseThrow(() -> new RuntimeException("Profesor_Modulo no encontrado."));
 			return convertirProfesor_ModuloCogido(profesor_ModuloEncontrado);
 	}
 
 	@Override
+	@Transactional
 	public Profesor_ModuloResponseDto crearProfesor_Modulo(Profesor_ModuloRequestDto creacion) {
 		Profesor_Modulo nuevoProfesor_Modulo = new Profesor_Modulo();
 			Profesor id_profesor = profesorRepository.findById(creacion.id_profesor()).orElseThrow(() -> new RuntimeException("Profesor no encontrado."));
@@ -49,6 +53,7 @@ public class Profesor_ModuloServiceImpl implements Profesor_ModuloService {
 	}
 
 	@Override
+	@Transactional
 	public Profesor_ModuloResponseDto editarProfesor_ModuloPorId(Integer id_profesor_modulo, Profesor_ModuloRequestDto datosActualizados) {
 		Profesor_Modulo profesor_ModuloEncontrado = profesor_ModuloRepository.findById(id_profesor_modulo).orElseThrow(() -> new RuntimeException("Profesor_Modulo no encontrado."));
 			Profesor id_profesor = profesorRepository.findById(datosActualizados.id_profesor()).orElseThrow(() -> new RuntimeException("Profesor no encontrado."));
@@ -60,6 +65,7 @@ public class Profesor_ModuloServiceImpl implements Profesor_ModuloService {
 	}
 
 	@Override
+	@Transactional
 	public void eliminarProfesor_ModuloPorId(Integer id_profesor_modulo) {
 		Profesor_Modulo profesor_ModuloEncontrado = profesor_ModuloRepository.findById(id_profesor_modulo).orElseThrow(() -> new RuntimeException("Profesor_Modulo no encontrado."));
 			profesor_ModuloRepository.delete(profesor_ModuloEncontrado);

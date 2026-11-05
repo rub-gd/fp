@@ -3,6 +3,7 @@ package com.actividad.fp.services.implementacion;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.actividad.fp.dtos.ModuloRequestDto;
 import com.actividad.fp.dtos.ModuloResponseDto;
@@ -19,29 +20,34 @@ public class ModuloServiceImpl implements ModuloService {
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public List<ModuloResponseDto> listarTodosLosModulos() {
 		return moduloRepository.findAll().stream().map(this::convertirModuloCogido).toList();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ModuloResponseDto buscarModuloPorId(Integer id_modulo) {
 		Modulo moduloEncontrado = moduloRepository.findById(id_modulo).orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
 			return convertirModuloCogido(moduloEncontrado);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ModuloResponseDto buscarModuloPorCodigo(String codigo) {
 		Modulo moduloEncontrado = moduloRepository.findByCodigo(codigo).stream().findFirst().orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
 			return convertirModuloCogido(moduloEncontrado);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ModuloResponseDto buscarModuloPorDiminutivo(String diminutivo) {
 		Modulo moduloEncontrado = moduloRepository.findByDiminutivo(diminutivo).stream().findFirst().orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
 			return convertirModuloCogido(moduloEncontrado);
 	}
 
 	@Override
+	@Transactional
 	public ModuloResponseDto crearModulo(ModuloRequestDto creacion) {
 		Modulo nuevoModulo = new Modulo();
 			nuevoModulo.setCodigo(creacion.codigo());
@@ -55,6 +61,7 @@ public class ModuloServiceImpl implements ModuloService {
 	}
 
 	@Override
+	@Transactional
 	public ModuloResponseDto editarModuloPorId(Integer id_modulo, ModuloRequestDto datosActualizados) {
 		Modulo moduloEncontrado = moduloRepository.findById(id_modulo).orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
 			moduloEncontrado.setCodigo(datosActualizados.codigo());
@@ -68,6 +75,7 @@ public class ModuloServiceImpl implements ModuloService {
 	}
 
 	@Override
+	@Transactional
 	public ModuloResponseDto editarModuloPorCodigo(String codigo, ModuloRequestDto datosActualizados) {
 		Modulo moduloEncontrado = moduloRepository.findByCodigo(codigo).stream().findFirst().orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
 			moduloEncontrado.setCodigo(datosActualizados.codigo());
@@ -81,6 +89,7 @@ public class ModuloServiceImpl implements ModuloService {
 	}
 
 	@Override
+	@Transactional
 	public ModuloResponseDto editarModuloPorDiminutivo(String diminutivo, ModuloRequestDto datosActualizados) {
 		Modulo moduloEncontrado = moduloRepository.findByDiminutivo(diminutivo).stream().findFirst().orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
 			moduloEncontrado.setCodigo(datosActualizados.codigo());
@@ -94,18 +103,21 @@ public class ModuloServiceImpl implements ModuloService {
 	}
 
 	@Override
+	@Transactional
 	public void eliminarModuloPorId(Integer id_modulo) {
 		Modulo moduloEncontrado = moduloRepository.findById(id_modulo).orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
 			moduloRepository.delete(moduloEncontrado);
 	}
 
 	@Override
+	@Transactional
 	public void eliminarModuloPorCodigo(String codigo) {
 		Modulo moduloEncontrado = moduloRepository.findByCodigo(codigo).stream().findFirst().orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
 			moduloRepository.delete(moduloEncontrado);
 	}
 
 	@Override
+	@Transactional
 	public void eliminarModuloPorDiminutivo(String diminutivo) {
 		Modulo moduloEncontrado = moduloRepository.findByDiminutivo(diminutivo).stream().findFirst().orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
 			moduloRepository.delete(moduloEncontrado);

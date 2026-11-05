@@ -3,6 +3,7 @@ package com.actividad.fp.services.implementacion;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.actividad.fp.dtos.Modulo_CursoRequestDto;
 import com.actividad.fp.dtos.Modulo_CursoResponseDto;
@@ -27,17 +28,20 @@ public class Modulo_CursoServiceImpl implements Modulo_CursoService {
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public List<Modulo_CursoResponseDto> listarTodosLosModulo_Cursos() {
 		return modulo_CursoRepository.findAll().stream().map(this::convertirModulo_CursoCogido).toList();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Modulo_CursoResponseDto buscarModulo_CursoPorId(Integer id_modulo_curso) {
 		Modulo_Curso modulo_CursoEncontrado = modulo_CursoRepository.findById(id_modulo_curso).orElseThrow(() -> new RuntimeException("Modulo_Curso no encontrado."));
 			return convertirModulo_CursoCogido(modulo_CursoEncontrado);
 	}
 
 	@Override
+	@Transactional
 	public Modulo_CursoResponseDto crearModulo_Curso(Modulo_CursoRequestDto creacion) {
 		Modulo_Curso nuevoModulo_Curso = new Modulo_Curso();
 			Modulo id_modulo = moduloRepository.findById(creacion.id_modulo()).orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
@@ -49,6 +53,7 @@ public class Modulo_CursoServiceImpl implements Modulo_CursoService {
 	}
 
 	@Override
+	@Transactional
 	public Modulo_CursoResponseDto editarModulo_CursoPorId(Integer id_modulo_curso, Modulo_CursoRequestDto datosActualizados) {
 		Modulo_Curso modulo_CursoEncontrado = modulo_CursoRepository.findById(id_modulo_curso).orElseThrow(() -> new RuntimeException("Modulo_Curso no encontrado."));
 			Modulo id_modulo = moduloRepository.findById(datosActualizados.id_modulo()).orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
@@ -60,6 +65,7 @@ public class Modulo_CursoServiceImpl implements Modulo_CursoService {
 	}
 
 	@Override
+	@Transactional
 	public void eliminarModulo_CursoPorId(Integer id_modulo_curso) {
 		Modulo_Curso modulo_CursoEncontrado = modulo_CursoRepository.findById(id_modulo_curso).orElseThrow(() -> new RuntimeException("Modulo_Curso no encontrado."));
 			modulo_CursoRepository.delete(modulo_CursoEncontrado);

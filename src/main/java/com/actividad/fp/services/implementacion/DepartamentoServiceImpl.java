@@ -3,6 +3,7 @@ package com.actividad.fp.services.implementacion;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.actividad.fp.dtos.DepartamentoRequestDto;
 import com.actividad.fp.dtos.DepartamentoResponseDto;
@@ -20,23 +21,27 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public List<DepartamentoResponseDto> listarTodosLosDepartamentos() {
 		return departamentoRepository.findAll().stream().map(this::convertirDepartamentoCogido).toList();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public DepartamentoResponseDto buscarDepartamentoPorId(Integer id_departamento) {
 		Departamento departamentoEncontrado = departamentoRepository.findById(id_departamento).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
 			return convertirDepartamentoCogido(departamentoEncontrado);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public DepartamentoResponseDto buscarDepartamentoPorCodigo(String codigo) {
 		Departamento departamentoEncontrado = departamentoRepository.findByCodigo(codigo).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
 			return convertirDepartamentoCogido(departamentoEncontrado);
 	}
 
 	@Override
+	@Transactional
 	public DepartamentoResponseDto crearDepartamento(DepartamentoRequestDto creacion) {
 		Departamento nuevoDepartamento = new Departamento();
 			nuevoDepartamento.setCodigo(creacion.codigo());
@@ -48,6 +53,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 	}
 
 	@Override
+	@Transactional
 	public DepartamentoResponseDto editarDepartamentoPorId(Integer id_departamento, DepartamentoRequestDto datosActualizados) {
 		Departamento departamentoEncontrado = departamentoRepository.findById(id_departamento).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
 			departamentoEncontrado.setCodigo(datosActualizados.codigo());
@@ -59,6 +65,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 	}
 
 	@Override
+	@Transactional
 	public DepartamentoResponseDto editarDepartamentoPorCodigo(String codigo, DepartamentoRequestDto datosActualizados) {
 		Departamento departamentoEncontrado = departamentoRepository.findByCodigo(codigo).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
 			departamentoEncontrado.setCodigo(datosActualizados.codigo());
@@ -70,12 +77,14 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 	}
 
 	@Override
+	@Transactional
 	public void eliminarDepartamentoPorId(Integer id_departamento) {
 		Departamento departamentoEncontrado = departamentoRepository.findById(id_departamento).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
 			departamentoRepository.delete(departamentoEncontrado);
 	}
 
 	@Override
+	@Transactional
 	public void eliminarDepartamentoPorCodigo(String codigo) {
 		Departamento departamentoEncontrado = departamentoRepository.findByCodigo(codigo).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
 			departamentoRepository.delete(departamentoEncontrado);

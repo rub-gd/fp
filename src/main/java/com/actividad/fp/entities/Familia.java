@@ -23,14 +23,14 @@ public class Familia {
 	@Column(name = "tlf_padre")private Integer tlf_padre;
 	@Column(name = "direccion_padre", length = 100)private String direccion_padre;
 	@Column(name = "codigo_postal_padre")private Integer codigo_postal_padre;
-	@Column(name = "provincia_padre")private Integer provincia_padre;
+	@Column(name = "provincia_padre", length = 100)private String provincia_padre;
 	@Column(name = "nombre_madre", length = 30)private String nombre_madre;
 	@Column(name = "apellidos_madre", length = 30)private String apellidos_madre;
 	@Column(name = "email_madre", length = 50)private String email_madre;
 	@Column(name = "tlf_madre")private Integer tlf_madre;
 	@Column(name = "direccion_madre", length = 100)private String direccion_madre;
 	@Column(name = "codigo_postal_madre")private Integer codigo_postal_madre;
-	@Column(name = "provincia_madre")private Integer provincia_madre;
+	@Column(name = "provincia_madre", length = 100)private String provincia_madre;
 	@Column(name = "son_separados")private Boolean son_separados;
 	@Column(name = "es_compartida")private Boolean es_compartida;
 	@Column(name = "es_padre")private Boolean es_padre;
@@ -79,10 +79,10 @@ public class Familia {
 	public void setCodigo_postal_padre(Integer codigo_postal_padre) {
 		this.codigo_postal_padre = codigo_postal_padre;
 	}
-	public Integer getProvincia_padre() {
+	public String getProvincia_padre() {
 		return provincia_padre;
 	}
-	public void setProvincia_padre(Integer provincia_padre) {
+	public void setProvincia_padre(String provincia_padre) {
 		this.provincia_padre = provincia_padre;
 	}
 	public String getNombre_madre() {
@@ -121,10 +121,10 @@ public class Familia {
 	public void setCodigo_postal_madre(Integer codigo_postal_madre) {
 		this.codigo_postal_madre = codigo_postal_madre;
 	}
-	public Integer getProvincia_madre() {
+	public String getProvincia_madre() {
 		return provincia_madre;
 	}
-	public void setProvincia_madre(Integer provincia_madre) {
+	public void setProvincia_madre(String provincia_madre) {
 		this.provincia_madre = provincia_madre;
 	}
 	public Boolean getSon_separados() {
