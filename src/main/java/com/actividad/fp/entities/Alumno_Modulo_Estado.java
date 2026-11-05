@@ -3,6 +3,8 @@ package com.actividad.fp.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -12,6 +14,7 @@ import jakarta.persistence.Table;
 @Table(name = "Alumno_Modulo_Estado", schema = "fp")
 public class Alumno_Modulo_Estado {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_alumno_modulo_estado")private Integer id_alumno_modulo_estado;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_alumno")private Alumno alumno;

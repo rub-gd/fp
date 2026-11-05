@@ -5,6 +5,8 @@ import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -16,6 +18,7 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "Profesor", schema = "fp", uniqueConstraints = {@UniqueConstraint(name = "uk_dni", columnNames = "dni")})
 public class Profesor {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_profesor")private Integer id_profesor;
 	@Column(name = "nombre", length = 30, nullable = false)private String nombre;
 	@Column(name = "apellidos", length = 50, nullable = false)private String apellidos;

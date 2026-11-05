@@ -5,6 +5,8 @@ import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -13,6 +15,7 @@ import jakarta.persistence.Table;
 @Table(name = "Familia", schema = "fp")
 public class Familia {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_familia")private Integer id_familia;
 	@Column(name = "nombre_padre", length = 30)private String nombre_padre;
 	@Column(name = "apellidos_padre", length = 30)private String apellidos_padre;

@@ -3,6 +3,8 @@ package com.actividad.fp.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -13,6 +15,7 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "Titulacion", schema = "fp", uniqueConstraints = {@UniqueConstraint(name = "uk_codigo", columnNames = "codigo"), @UniqueConstraint(name = "uk_diminutivo", columnNames = "diminutivo")})
 public class Titulacion {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_titulacion")private Integer id_titulacion;
 	@Column(name = "codigo", length = 10, nullable = false, unique = true)private String codigo;
 	@Column(name = "diminutivo", length = 5, nullable = false, unique = true)private String diminutivo;
