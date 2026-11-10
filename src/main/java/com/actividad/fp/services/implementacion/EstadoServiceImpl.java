@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.actividad.fp.dtos.EstadoRequestDto;
 import com.actividad.fp.dtos.EstadoResponseDto;
 import com.actividad.fp.entities.Estado;
+import com.actividad.fp.exceptions.EstadoNotFoundException;
 import com.actividad.fp.repository.EstadoRepository;
 import com.actividad.fp.services.EstadoService;
 
@@ -28,7 +29,7 @@ public class EstadoServiceImpl implements EstadoService {
 	@Override
 	@Transactional(readOnly = true)
 	public EstadoResponseDto buscarEstadoPorId(Integer id_estado) {
-		Estado estadoEncontrado = estadoRepository.findById(id_estado).orElseThrow(() -> new RuntimeException("Estado no encontrado."));
+		Estado estadoEncontrado = estadoRepository.findById(id_estado).orElseThrow(() -> new EstadoNotFoundException("Estado no encontrado."));
 			return convertirEstadoCogido(estadoEncontrado);
 	}
 
@@ -45,7 +46,7 @@ public class EstadoServiceImpl implements EstadoService {
 	@Override
 	@Transactional
 	public EstadoResponseDto editarEstadoPorId(Integer id_estado, EstadoRequestDto datosActualizados) {
-		Estado estadoEncontrado = estadoRepository.findById(id_estado).orElseThrow(() -> new RuntimeException("Estado no encontrado."));
+		Estado estadoEncontrado = estadoRepository.findById(id_estado).orElseThrow(() -> new EstadoNotFoundException("Estado no encontrado."));
 			estadoEncontrado.setNombre(datosActualizados.nombre());
 			estadoEncontrado.setDescripcion(datosActualizados.descripcion());
 				estadoRepository.save(estadoEncontrado);
@@ -55,7 +56,7 @@ public class EstadoServiceImpl implements EstadoService {
 	@Override
 	@Transactional
 	public void eliminarEstadoPorId(Integer id_estado) {
-		Estado estadoEncontrado = estadoRepository.findById(id_estado).orElseThrow(() -> new RuntimeException("Estado no encontrado."));
+		Estado estadoEncontrado = estadoRepository.findById(id_estado).orElseThrow(() -> new EstadoNotFoundException("Estado no encontrado."));
 			estadoRepository.delete(estadoEncontrado);
 	}
 

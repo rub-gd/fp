@@ -1,5 +1,6 @@
 package com.actividad.fp.services.implementacion;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -7,6 +8,8 @@ import com.actividad.fp.dtos.AlumnoRequestDto;
 import com.actividad.fp.dtos.AlumnoResponseDto;
 import com.actividad.fp.entities.Alumno;
 import com.actividad.fp.entities.Familia;
+import com.actividad.fp.exceptions.AlumnoNotFoundException;
+import com.actividad.fp.exceptions.FamiliaNotFoundException;
 import com.actividad.fp.repository.AlumnoRepository;
 import com.actividad.fp.repository.FamiliaRepository;
 import com.actividad.fp.services.AlumnoService;
@@ -27,13 +30,13 @@ public class AlumnoServiceImpl implements AlumnoService {
 	@Override
 	@Transactional(readOnly = true)
 	public AlumnoResponseDto buscarAlumnoPorId(Integer id_alumno) {
-		Alumno alumnoEncontrado = alumnoRepository.findById(id_alumno).orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
+		Alumno alumnoEncontrado = alumnoRepository.findById(id_alumno).orElseThrow(() -> new AlumnoNotFoundException("Alumno no encontrado"));
 			return convertirAlumnoCogido(alumnoEncontrado);
 	}
 	@Override
 	@Transactional(readOnly = true)
 	public AlumnoResponseDto buscarAlumnoPorDni(String dni) {
-		Alumno alumnoEncontrado = alumnoRepository.findByDni(dni).orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
+		Alumno alumnoEncontrado = alumnoRepository.findByDni(dni).orElseThrow(() -> new AlumnoNotFoundException("Alumno no encontrado"));
 			return convertirAlumnoCogido(alumnoEncontrado);
 	}
 	@Override
@@ -50,7 +53,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 			nuevoAlumno.setTlf_personal(creacion.tlf_personal());
 			nuevoAlumno.setFecha_alta(creacion.fecha_alta());
 			nuevoAlumno.setFecha_baja(creacion.fecha_baja());
-			Familia id_familia = familiaRepository.findById(creacion.id_familia()).orElseThrow(() -> new RuntimeException("Familia no encontrada."));
+			Familia id_familia = familiaRepository.findById(creacion.id_familia()).orElseThrow(() -> new FamiliaNotFoundException("Familia no encontrada."));
 				nuevoAlumno.setFamilia(id_familia);
 					alumnoRepository.save(nuevoAlumno);
 						return convertirAlumnoCogido(nuevoAlumno);
@@ -58,7 +61,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 	@Override
 	@Transactional
 	public AlumnoResponseDto actualizarAlumnoPorId(Integer id_alumno, AlumnoRequestDto datos_actualizados) {
-		Alumno alumnoEncontrado = alumnoRepository.findById(id_alumno).orElseThrow(() -> new RuntimeException("Alumno no encontrado."));
+		Alumno alumnoEncontrado = alumnoRepository.findById(id_alumno).orElseThrow(() -> new AlumnoNotFoundException("Alumno no encontrado."));
 		//alumnoEncontrado.setId_alumno(datos_actualizados.id_alumno()); Esto no se hace ya que no se debe poder cambiar el identificador.
 		alumnoEncontrado.setNombre(datos_actualizados.nombre());
 		alumnoEncontrado.setApellidos(datos_actualizados.apellidos());
@@ -69,7 +72,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 		alumnoEncontrado.setTlf_personal(datos_actualizados.tlf_personal());
 		alumnoEncontrado.setFecha_alta(datos_actualizados.fecha_alta());
 		alumnoEncontrado.setFecha_baja(datos_actualizados.fecha_baja());
-		Familia id_familia = familiaRepository.findById(datos_actualizados.id_familia()).orElseThrow(() -> new RuntimeException("Familia no encontrada."));
+		Familia id_familia = familiaRepository.findById(datos_actualizados.id_familia()).orElseThrow(() -> new FamiliaNotFoundException("Familia no encontrada."));
 			alumnoEncontrado.setFamilia(id_familia);
 				alumnoRepository.save(alumnoEncontrado);
 					return convertirAlumnoCogido(alumnoEncontrado);
@@ -77,7 +80,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 	@Override
 	@Transactional
 	public AlumnoResponseDto actualizarAlumnoPorDni(String dni, AlumnoRequestDto datos_actualizados) {
-		Alumno alumnoEncontrado = alumnoRepository.findByDni(dni).orElseThrow(() -> new RuntimeException("Alumno no encontrado."));
+		Alumno alumnoEncontrado = alumnoRepository.findByDni(dni).orElseThrow(() -> new AlumnoNotFoundException("Alumno no encontrado."));
 			//alumnoEncontrado.setId_alumno(datos_actualizados.id_alumno()); Esto no se hace ya que no se debe poder cambiar el identificador.
 			alumnoEncontrado.setNombre(datos_actualizados.nombre());
 			alumnoEncontrado.setApellidos(datos_actualizados.apellidos());
@@ -88,7 +91,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 			alumnoEncontrado.setTlf_personal(datos_actualizados.tlf_personal());
 			alumnoEncontrado.setFecha_alta(datos_actualizados.fecha_alta());
 			alumnoEncontrado.setFecha_baja(datos_actualizados.fecha_baja());
-			Familia id_familia = familiaRepository.findById(datos_actualizados.id_familia()).orElseThrow(() -> new RuntimeException("Familia no encontrada."));
+			Familia id_familia = familiaRepository.findById(datos_actualizados.id_familia()).orElseThrow(() -> new FamiliaNotFoundException("Familia no encontrada."));
 				alumnoEncontrado.setFamilia(id_familia);
 					alumnoRepository.save(alumnoEncontrado);
 						return convertirAlumnoCogido(alumnoEncontrado);
@@ -96,13 +99,13 @@ public class AlumnoServiceImpl implements AlumnoService {
 	@Override
 	@Transactional
 	public void eliminarAlumnoPorId(Integer id_alumno) {
-		Alumno alumnoEncontrado = alumnoRepository.findById(id_alumno).orElseThrow(() -> new RuntimeException("Alumno no encontrado."));
+		Alumno alumnoEncontrado = alumnoRepository.findById(id_alumno).orElseThrow(() -> new AlumnoNotFoundException("Alumno no encontrado."));
 			alumnoRepository.delete(alumnoEncontrado);
 	}
 	@Override
 	@Transactional
 	public void eliminarAlumnoPorDni(String dni) {
-		Alumno alumnoEncontrado = alumnoRepository.findByDni(dni).orElseThrow(() -> new RuntimeException("Alumno no encontrado."));
+		Alumno alumnoEncontrado = alumnoRepository.findByDni(dni).orElseThrow(() -> new AlumnoNotFoundException("Alumno no encontrado."));
 			alumnoRepository.delete(alumnoEncontrado);
 	}
 	

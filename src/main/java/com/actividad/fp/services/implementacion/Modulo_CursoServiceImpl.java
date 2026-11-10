@@ -10,6 +10,9 @@ import com.actividad.fp.dtos.Modulo_CursoResponseDto;
 import com.actividad.fp.entities.Curso;
 import com.actividad.fp.entities.Modulo;
 import com.actividad.fp.entities.Modulo_Curso;
+import com.actividad.fp.exceptions.CursoNotFoundException;
+import com.actividad.fp.exceptions.ModuloNotFoundException;
+import com.actividad.fp.exceptions.Modulo_CursoNotFoundException;
 import com.actividad.fp.repository.CursoRepository;
 import com.actividad.fp.repository.ModuloRepository;
 import com.actividad.fp.repository.Modulo_CursoRepository;
@@ -36,7 +39,7 @@ public class Modulo_CursoServiceImpl implements Modulo_CursoService {
 	@Override
 	@Transactional(readOnly = true)
 	public Modulo_CursoResponseDto buscarModulo_CursoPorId(Integer id_modulo_curso) {
-		Modulo_Curso modulo_CursoEncontrado = modulo_CursoRepository.findById(id_modulo_curso).orElseThrow(() -> new RuntimeException("Modulo_Curso no encontrado."));
+		Modulo_Curso modulo_CursoEncontrado = modulo_CursoRepository.findById(id_modulo_curso).orElseThrow(() -> new Modulo_CursoNotFoundException("Modulo_Curso no encontrado."));
 			return convertirModulo_CursoCogido(modulo_CursoEncontrado);
 	}
 
@@ -44,9 +47,9 @@ public class Modulo_CursoServiceImpl implements Modulo_CursoService {
 	@Transactional
 	public Modulo_CursoResponseDto crearModulo_Curso(Modulo_CursoRequestDto creacion) {
 		Modulo_Curso nuevoModulo_Curso = new Modulo_Curso();
-			Modulo id_modulo = moduloRepository.findById(creacion.id_modulo()).orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
+			Modulo id_modulo = moduloRepository.findById(creacion.id_modulo()).orElseThrow(() -> new ModuloNotFoundException("Modulo no encontrado."));
 				nuevoModulo_Curso.setModulo(id_modulo);
-			Curso id_curso = cursoRepository.findById(creacion.id_curso()).orElseThrow(()-> new RuntimeException("Curso no encontrado."));
+			Curso id_curso = cursoRepository.findById(creacion.id_curso()).orElseThrow(()-> new CursoNotFoundException("Curso no encontrado."));
 				nuevoModulo_Curso.setCurso(id_curso);
 					modulo_CursoRepository.save(nuevoModulo_Curso);
 						return convertirModulo_CursoCogido(nuevoModulo_Curso);
@@ -55,10 +58,10 @@ public class Modulo_CursoServiceImpl implements Modulo_CursoService {
 	@Override
 	@Transactional
 	public Modulo_CursoResponseDto editarModulo_CursoPorId(Integer id_modulo_curso, Modulo_CursoRequestDto datosActualizados) {
-		Modulo_Curso modulo_CursoEncontrado = modulo_CursoRepository.findById(id_modulo_curso).orElseThrow(() -> new RuntimeException("Modulo_Curso no encontrado."));
-			Modulo id_modulo = moduloRepository.findById(datosActualizados.id_modulo()).orElseThrow(() -> new RuntimeException("Modulo no encontrado."));
+		Modulo_Curso modulo_CursoEncontrado = modulo_CursoRepository.findById(id_modulo_curso).orElseThrow(() -> new Modulo_CursoNotFoundException("Modulo_Curso no encontrado."));
+			Modulo id_modulo = moduloRepository.findById(datosActualizados.id_modulo()).orElseThrow(() -> new ModuloNotFoundException("Modulo no encontrado."));
 				modulo_CursoEncontrado.setModulo(id_modulo);
-			Curso id_curso = cursoRepository.findById(datosActualizados.id_curso()).orElseThrow(()-> new RuntimeException("Curso no encontrado."));
+			Curso id_curso = cursoRepository.findById(datosActualizados.id_curso()).orElseThrow(()-> new CursoNotFoundException("Curso no encontrado."));
 				modulo_CursoEncontrado.setCurso(id_curso);
 					modulo_CursoRepository.save(modulo_CursoEncontrado);
 						return convertirModulo_CursoCogido(modulo_CursoEncontrado);
@@ -67,7 +70,7 @@ public class Modulo_CursoServiceImpl implements Modulo_CursoService {
 	@Override
 	@Transactional
 	public void eliminarModulo_CursoPorId(Integer id_modulo_curso) {
-		Modulo_Curso modulo_CursoEncontrado = modulo_CursoRepository.findById(id_modulo_curso).orElseThrow(() -> new RuntimeException("Modulo_Curso no encontrado."));
+		Modulo_Curso modulo_CursoEncontrado = modulo_CursoRepository.findById(id_modulo_curso).orElseThrow(() -> new Modulo_CursoNotFoundException("Modulo_Curso no encontrado."));
 			modulo_CursoRepository.delete(modulo_CursoEncontrado);
 	}
 

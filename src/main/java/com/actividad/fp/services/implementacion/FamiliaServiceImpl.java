@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.actividad.fp.dtos.FamiliaRequestDto;
 import com.actividad.fp.dtos.FamiliaResponseDto;
 import com.actividad.fp.entities.Familia;
+import com.actividad.fp.exceptions.FamiliaNotFoundException;
 import com.actividad.fp.repository.FamiliaRepository;
 import com.actividad.fp.services.FamiliaService;
 
@@ -28,7 +29,7 @@ public class FamiliaServiceImpl implements FamiliaService {
 	@Override
 	@Transactional(readOnly = true)
 	public FamiliaResponseDto buscarFamiliaPorId(Integer id_familia) {
-		Familia familiaEncontrada = familiaRepository.findById(id_familia).orElseThrow(() -> new RuntimeException("Familia no encontrada."));
+		Familia familiaEncontrada = familiaRepository.findById(id_familia).orElseThrow(() -> new FamiliaNotFoundException("Familia no encontrada."));
 			return convertirFamiliaCogida(familiaEncontrada);
 	}
 
@@ -61,7 +62,7 @@ public class FamiliaServiceImpl implements FamiliaService {
 	@Override
 	@Transactional
 	public FamiliaResponseDto editarFamiliaPorId(Integer id_familia, FamiliaRequestDto datosActualizados) {
-		Familia familiaEncontrada = familiaRepository.findById(id_familia).orElseThrow(() -> new RuntimeException("Familia no encontrada."));
+		Familia familiaEncontrada = familiaRepository.findById(id_familia).orElseThrow(() -> new FamiliaNotFoundException("Familia no encontrada."));
 			familiaEncontrada.setNombre_padre(datosActualizados.nombre_padre());
 			familiaEncontrada.setApellidos_padre(datosActualizados.apellidos_padre());
 			familiaEncontrada.setEmail_padre(datosActualizados.email_padre());
@@ -87,7 +88,7 @@ public class FamiliaServiceImpl implements FamiliaService {
 	@Override
 	@Transactional
 	public void eliminarFamiliaPorId(Integer id_familia) {
-		Familia familiaEncontrada = familiaRepository.findById(id_familia).orElseThrow(() -> new RuntimeException("Familia no encontrada."));
+		Familia familiaEncontrada = familiaRepository.findById(id_familia).orElseThrow(() -> new FamiliaNotFoundException("Familia no encontrada."));
 			familiaRepository.delete(familiaEncontrada);
 	}
 

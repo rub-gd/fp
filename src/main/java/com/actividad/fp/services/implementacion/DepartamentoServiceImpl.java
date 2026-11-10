@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.actividad.fp.dtos.DepartamentoRequestDto;
 import com.actividad.fp.dtos.DepartamentoResponseDto;
 import com.actividad.fp.entities.Departamento;
+import com.actividad.fp.exceptions.DepartamentoNotFoundException;
 import com.actividad.fp.repository.DepartamentoRepository;
 import com.actividad.fp.services.DepartamentoService;
 
@@ -29,14 +30,14 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 	@Override
 	@Transactional(readOnly = true)
 	public DepartamentoResponseDto buscarDepartamentoPorId(Integer id_departamento) {
-		Departamento departamentoEncontrado = departamentoRepository.findById(id_departamento).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
+		Departamento departamentoEncontrado = departamentoRepository.findById(id_departamento).orElseThrow(() -> new DepartamentoNotFoundException("Departamento no encontrado."));
 			return convertirDepartamentoCogido(departamentoEncontrado);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public DepartamentoResponseDto buscarDepartamentoPorCodigo(String codigo) {
-		Departamento departamentoEncontrado = departamentoRepository.findByCodigo(codigo).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
+		Departamento departamentoEncontrado = departamentoRepository.findByCodigo(codigo).orElseThrow(() -> new DepartamentoNotFoundException("Departamento no encontrado."));
 			return convertirDepartamentoCogido(departamentoEncontrado);
 	}
 
@@ -55,7 +56,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 	@Override
 	@Transactional
 	public DepartamentoResponseDto editarDepartamentoPorId(Integer id_departamento, DepartamentoRequestDto datosActualizados) {
-		Departamento departamentoEncontrado = departamentoRepository.findById(id_departamento).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
+		Departamento departamentoEncontrado = departamentoRepository.findById(id_departamento).orElseThrow(() -> new DepartamentoNotFoundException("Departamento no encontrado."));
 			departamentoEncontrado.setCodigo(datosActualizados.codigo());
 			departamentoEncontrado.setNombre(datosActualizados.nombre());
 			departamentoEncontrado.setDescripcion(datosActualizados.descripcion());
@@ -67,7 +68,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 	@Override
 	@Transactional
 	public DepartamentoResponseDto editarDepartamentoPorCodigo(String codigo, DepartamentoRequestDto datosActualizados) {
-		Departamento departamentoEncontrado = departamentoRepository.findByCodigo(codigo).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
+		Departamento departamentoEncontrado = departamentoRepository.findByCodigo(codigo).orElseThrow(() -> new DepartamentoNotFoundException("Departamento no encontrado."));
 			departamentoEncontrado.setCodigo(datosActualizados.codigo());
 			departamentoEncontrado.setNombre(datosActualizados.nombre());
 			departamentoEncontrado.setDescripcion(datosActualizados.descripcion());
@@ -79,14 +80,14 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 	@Override
 	@Transactional
 	public void eliminarDepartamentoPorId(Integer id_departamento) {
-		Departamento departamentoEncontrado = departamentoRepository.findById(id_departamento).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
+		Departamento departamentoEncontrado = departamentoRepository.findById(id_departamento).orElseThrow(() -> new DepartamentoNotFoundException("Departamento no encontrado."));
 			departamentoRepository.delete(departamentoEncontrado);
 	}
 
 	@Override
 	@Transactional
 	public void eliminarDepartamentoPorCodigo(String codigo) {
-		Departamento departamentoEncontrado = departamentoRepository.findByCodigo(codigo).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
+		Departamento departamentoEncontrado = departamentoRepository.findByCodigo(codigo).orElseThrow(() -> new DepartamentoNotFoundException("Departamento no encontrado."));
 			departamentoRepository.delete(departamentoEncontrado);
 	}
 
